@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Search Books</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      header {
+        background: linear-gradient(to right, #fff7d9 60%, #ffe6b6 100%);
+        color: #fff;
+        padding: 0px 0;
+        text-align: center;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20%;
+      }
+      .logo {
+        height: 120px;
+        margin-left: 20px;
+      }
+
+      header h1 {
+        margin: 0;
+      }
+      .list-books {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+        margin-right: 20px;
+      }
+      .list-books li {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background: white;
+        transition: ease-in-out 0.2s;
+      }
+      .list-books li a {
+        text-decoration: none;
+        font-family: "poppins";
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        transition: ease-in-out 0.1s;
+      }
+      .list-books li:hover {
+        background: #53ccec;
+      }
+      .list-books li a:hover {
+        color: white;
+      }
+      .thumbnail {
+        display: flex;
+        margin: 0 auto;
+        position: absolute;
+        z-index: -99;
+        width: 60%;
+        height: 60%;
+        top: 150px;
+        left: 20%;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'poppins';
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        font-family: 'poppins';
+      }
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        font-family: 'poppins';
+      }
+      button[type="submit"] {
+        color: #000000;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        border: none;
+        background: #e7e7e7;
+        font-family: 'poppins';
+        font-weight: bold;
+        transition: 0.2s ease-in-out;
+        margin-bottom: 20px;
+      }
+      button[type="submit"]:hover {
+        background: #53ccec;
+        color: white;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        font-family: 'poppins';
+      }
+      th {
+        background-color: #007bff;
+        color: #fff;
+      }
+      td {
+        background-color: #f4f4f4;
+      }
+      .no-books {
+        text-align: center;
+        padding: 20px;
+        font-weight: bold;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="../images/logo.png" alt="" class="logo" />
+      <ul class="list-books">
+        <li><a href="/search">Search Book</a></li>
+        <li><a href="/update">Update Book</a></li>
+        <li><a href="/insert">Add Book</a></li>
+        <li><a href="/delete">Delete Book</a></li>
+        <li><a href="/view">View Books</a></li>
+      </ul>
+    </header>
+    <div class="container">
+      <h1>Search Books</h1>
+      <form id="searchForm">
+        <label for="searchType">Search By:</label>
+        <select id="searchType">
+          <option value="id">ID</option>
+          <option value="name">Name</option>
+          <option value="type">Type</option>
+          <option value="author">Author</option>
+          <option value="publicationYear">Publication Year</option>
+          <option value="rating">Rating</option>
+        </select>
+        <div id="searchFields">
+          <input
+            type="text"
+            id="searchValue"
+            placeholder="Enter Search Value"
+          />
+        </div>
+        <button type="submit">Search</button>
+      </form>
+      <div id="searchResults"></div>
+    </div>
+    <img class="thumbnail" src="../images/tidal-wave2.jpg" alt="" />
+    <script>
+      async function searchBooks(event) {
+        event.preventDefault();
+        const searchType = document.getElementById("searchType").value;
+        const searchValue = document.getElementById("searchValue").value;
+        const response = await fetch("/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            [searchType]: searchValue,
+          }),
+        });
+        const books = await response.json();
+        displayBooks(books);
+      }
+
+      function displayBooks(books) {
+        const searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = "";
+        if (books.length > 0) {
+          const table = document.createElement("table");
+          const headerRow = table.insertRow();
+          for (const key in books[0]) {
+            // Skip _id column
+            if (key !== "_id") {
+              const headerCell = document.createElement("th");
+              headerCell.textContent = key.toUpperCase();
+              headerRow.appendChild(headerCell);
+            }
+          }
+          books.forEach((book) => {
+            const row = table.insertRow();
+            for (const key in book) {
+              // Skip _id column
+              if (key !== "_id") {
+                const cell = row.insertCell();
+                cell.textContent = book[key];
+              }
+            }
+          });
+          searchResults.appendChild(table);
+        } else {
+          const noBooksMessage = document.createElement("div");
+          noBooksMessage.classList.add("no-books");
+          noBooksMessage.textContent = "No books found";
+          searchResults.appendChild(noBooksMessage);
+        }
+      }
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", searchBooks);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Delete Books</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      header {
+        background: linear-gradient(to right, #fff7d9 60%, #ffe6b6 100%);
+        color: #fff;
+        padding: 0px 0;
+        text-align: center;
+        margin-bottom: 130px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20%;
+      }
+      .logo {
+        height: 120px;
+        margin-left: 20px;
+      }
+
+      header h1 {
+        margin: 0;
+      }
+      .list-books {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+        margin-right: 20px;
+      }
+      .list-books li {
+        padding: 10px 20px;
+        border-radius: 5px;
+        background: white;
+        transition: ease-in-out 0.2s;
+      }
+      .list-books li a {
+        text-decoration: none;
+        font-family: "poppins";
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        transition: ease-in-out 0.1s;
+      }
+      .list-books li:hover {
+        background: #53ccec;
+      }
+      .list-books li a:hover {
+        color: white;
+      }
+      .thumbnail {
+        display: flex;
+        margin: 0 auto;
+        position: absolute;
+        z-index: -99;
+        width: 60%;
+        height: 60%;
+        top: 150px;
+        left: 20%;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: "poppins";
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        font-family: "poppins";
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+
+      input[type="submit"] {
+        background-color: #ffffff;
+        color: #000000;
+        border-radius: 3px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        background: #e7e7e7;
+        border: none;
+        font-family: "poppins";
+        font-weight: 600;
+      }
+
+      input[type="submit"]:hover {
+        background-color: rgb(255, 59, 59);
+        color: #fff;
+        border: none;
+      }
+
+      #deleteMessage {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .success {
+        background-color: #4caf50;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="../images/logo.png" alt="" class="logo" />
+      <ul class="list-books">
+        <li><a href="/search">Search Book</a></li>
+        <li><a href="/update">Update Book</a></li>
+        <li><a href="/insert">Add Book</a></li>
+        <li><a href="/delete">Delete Book</a></li>
+        <li><a href="/view">View Books</a></li>
+      </ul>
+    </header>
+
+    <div class="container">
+      <h1>Delete Books</h1>
+      <form id="deleteForm" action="/delete" method="POST">
+        <label for="bookId">Enter Book ID to Delete:</label>
+        <input type="text" id="bookId" name="bookId" required />
+        <input type="submit" value="Delete Book" />
+      </form>
+      <div id="deleteMessage"></div>
+    </div>
+    <img class="thumbnail" src="../images/tidal-wave2.jpg" alt="" />
+    <script>
+      document
+        .getElementById("deleteForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const bookId = document.getElementById("bookId").value;
+          const response = await fetch("/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              bookId: bookId,
+            }),
+          });
+
+          const deleteMessage = document.getElementById("deleteMessage");
+          if (response.ok) {
+            console.log("Book deleted successfully!");
+            deleteMessage.textContent = `Book with ID ${bookId} deleted successfully!`;
+            deleteMessage.classList.add("success");
+          } else {
+            console.error("Error deleting book:", response.statusText);
+            alert("Error deleting book. Please try again.");
+          }
+
+          deleteMessage.style.display = "block";
+          deleteMessage.addEventListener("click", function () {
+            deleteMessage.style.display = "none";
+          });
+          if (response.ok) {
+            document.getElementById("deleteForm").reset();
+          }
+        });
+    </script>
+  </body>
+</html>

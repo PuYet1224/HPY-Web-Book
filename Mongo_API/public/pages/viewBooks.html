@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>View Books</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f6f6f6;
+        color: #333;
+      }
+
+      header {
+        background:linear-gradient(to right,#fff7d9 60%, #ffe6b6 100%);
+        color: #fff;
+        padding: 0px 0;
+        text-align: center;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20%;
+      }
+      .logo{
+        height: 120px;
+        margin-left: 20px;
+      }
+
+      header h1 {
+        margin: 0;
+      }
+      .list-books{
+        list-style: none;
+        display: flex;
+        gap: 30px;
+        margin-right: 20px;
+      }
+      .list-books li{
+        padding: 10px 20px;
+        border-radius: 5px;
+        background: white;
+        transition: ease-in-out 0.2s;
+      }
+      .list-books li a{
+        text-decoration: none;
+        font-family: 'poppins';
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        transition: ease-in-out 0.1s;
+      }
+      .list-books li:hover{
+        background: #53ccec;
+      }
+      .list-books li a:hover{
+        color: white;
+      }
+      #backBtn {
+        text-decoration: none;
+        color: white;
+        background: #007bff;
+        padding: 15px;
+        margin-left: 20px;
+        border-radius: 10px;
+      }
+
+      #booksContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .book {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px;
+        width: 500px;
+        padding: 10px 10px;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        transition: filter 0.15s;
+        position: relative;
+      }
+      .get-book {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(92, 255, 81, 0.9);
+        color: rgb(255, 255, 255);
+        padding: 20px 30px;
+        border-radius: 5px;
+        display: none;
+        z-index: 1;
+        font-size: 20px;
+        font-family: "poppins";
+        font-weight: 600;
+      }
+
+      .book:hover {
+        filter: brightness(95%);
+      }
+
+      .book img {
+        width: 200px;
+        border-radius: 5px;
+        margin: 15px;
+        height: 300px;
+      }
+      .thumbnail{
+        margin: 0 auto;
+        display: flex;
+        height: 470px;
+        object-fit:cover;
+        width: 60%;
+      }
+      .left-side {
+        flex: 4;
+        padding: 0 10px;
+        text-align: left;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .right-side {
+        flex: 1;
+        padding: 0 0px;
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .book h2 {
+        margin-top: 0;
+        color: #333;
+      }
+
+      .book p {
+        margin: 5px 0;
+        color: rgb(66, 66, 66);
+        font-family: "poppins";
+        font-size: 17px;
+      }
+
+      .book-name {
+        font-weight: bold;
+      }
+
+      .book-price {
+        font-weight: bold;
+        font-size: 25px;
+        color: rgb(50, 219, 50);
+        font-family: "poppins";
+      }
+
+      .hot-sale {
+        background: rgb(255, 22, 22);
+        color: #f6f6f6;
+        font-family: "poppins";
+        padding: 10px;
+        font-size: 15px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="../images/logo.png" alt="" class="logo">
+      <ul class="list-books">
+        <li><a href="/search">Search Book</a></li>
+        <li><a href="/update">Update Book</a></li>
+        <li><a href="/insert">Add Book</a></li>
+        <li><a href="/delete">Delete Book</a></li>
+        <li><a href="/view">View Books</a></li>
+      </ul>
+    </header>
+    <div>
+      <img class="thumbnail" src="../images/slide_2_img.webp" alt="">
+    </div>
+    <div id="booksContainer"></div>
+
+
+    <footer>&copy; 2024 Bookshop</footer>
+
+    <script>
+      window.onload = async function () {
+        try {
+          const response = await fetch("/view", { method: "POST" });
+          if (response.ok) displayBooks(await response.json());
+          else throw new Error(`Error fetching books: ${response.statusText}`);
+        } catch (error) {
+          console.error("Error fetching books:", error);
+          alert("Error fetching books. Please try again.");
+        }
+      };
+
+      function displayBooks(books) {
+        const booksContainer = document.getElementById("booksContainer");
+
+        books.forEach((book) => {
+          const bookDiv = document.createElement("div");
+          bookDiv.classList.add("book");
+
+          const image = document.createElement("img");
+          image.src = book.image;
+
+          const leftSide = document.createElement("div");
+          leftSide.classList.add("left-side");
+
+          const type = document.createElement("p");
+          type.textContent = "Type: " + book.type;
+
+          const name = document.createElement("p");
+          name.textContent = "Tên sách: " + book.name;
+          name.classList.add("book-name");
+
+          const author = document.createElement("p");
+          author.textContent = "Author: " + book.author;
+
+          const publicationYear = document.createElement("p");
+          publicationYear.textContent =
+            "Publication Year: " + book.publicationYear;
+
+          const rating = document.createElement("p");
+          rating.textContent = "Rating: " + book.rating;
+
+          leftSide.appendChild(name);
+          leftSide.appendChild(author);
+          leftSide.appendChild(type);
+          leftSide.appendChild(publicationYear);
+          leftSide.appendChild(rating);
+
+          const rightSide = document.createElement("div");
+          rightSide.classList.add("right-side");
+
+          const price = document.createElement("div");
+          price.textContent = book.price;
+          price.classList.add("book-price");
+
+          const description = document.createElement("div");
+          description.textContent = book.description;
+          description.classList.add("hot-sale");
+
+          rightSide.appendChild(price);
+          rightSide.appendChild(description);
+
+          const getBook = document.createElement("div");
+          getBook.textContent = "GET BOOK";
+          getBook.classList.add("get-book");
+
+          // Hiển thị phần GET BOOK khi di chuột vào cuốn sách
+          bookDiv.addEventListener("mouseenter", function () {
+            getBook.style.display = "block";
+          });
+
+          // Ẩn phần GET BOOK khi di chuột ra khỏi cuốn sách
+          bookDiv.addEventListener("mouseleave", function () {
+            getBook.style.display = "none";
+          });
+
+          bookDiv.appendChild(image);
+          bookDiv.appendChild(leftSide);
+          bookDiv.appendChild(rightSide);
+          bookDiv.appendChild(getBook);
+
+          booksContainer.appendChild(bookDiv);
+        });
+      }
+    </script>
+  </body>
+</html>
