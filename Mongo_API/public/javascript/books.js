@@ -5,20 +5,20 @@ const { connectToMongoDB } = require('./mongodb');
 async function findBooks(criteria) {
     try {
         const usersCollection = await connectToMongoDB();
+        let books;
+        
         if (criteria) {
             if (typeof criteria === 'string') {
-                // Trường hợp này sử dụng để tìm một cuốn sách dựa trên id
                 const book = await usersCollection.findOne({ id: criteria });
                 return book ? [book] : [];
             } else {
-                // Trường hợp này sử dụng để tìm nhiều cuốn sách dựa trên tiêu chí tìm kiếm
-                const books = await usersCollection.find(criteria).toArray();
-                return books;
+                books = await usersCollection.find(criteria).toArray();
             }
         } else {
-            console.error('Error: No search criteria provided');
-            return [];
+            books = await usersCollection.find().toArray();
         }
+        
+        return books;
     } catch (err) {
         console.error('Error:', err);
         return [];
