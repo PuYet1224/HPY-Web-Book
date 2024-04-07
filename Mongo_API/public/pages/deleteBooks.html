@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,7 +20,7 @@
         background-color: #f4f4f4;
       }
       header {
-        background: linear-gradient(to right, #fff7d9 60%, #ffe6b6 100%);
+        background: linear-gradient(to right, #EBDEF0 60%, #C39BD3 100%);
         color: #fff;
         padding: 0px 0;
         text-align: center;
@@ -42,38 +44,25 @@
         gap: 30px;
         margin-right: 20px;
       }
-      .list-books li {
-        padding: 10px 20px;
-        border-radius: 5px;
-        background: white;
-        transition: ease-in-out 0.2s;
-      }
       .list-books li a {
-        text-decoration: none;
-        font-family: "poppins";
-        font-size: 20px;
-        font-weight: bold;
-        color: black;
-        transition: ease-in-out 0.1s;
-      }
-      .list-books li:hover {
-        background: #53ccec;
-      }
-      .list-books li a:hover {
-        color: white;
-      }
-      .thumbnail {
-        display: flex;
-        margin: 0 auto;
-        position: absolute;
-        z-index: -99;
-        width: 60%;
-        height: 60%;
-        top: 150px;
-        left: 20%;
-      }
+      text-decoration: none;
+      font-family: 'poppins';
+      font-size: 20px;
+      font-weight: bold;
+      color: black;
+      transition: ease-in-out 0.1s;
+      padding: 10px 20px;
+      background: none;
+      border-radius: 5px;
+    }
+
+
+    .list-books li a:hover {
+      color: rgb(0, 0, 0);
+      background: #fff;
+    }
       .container {
-        max-width: 600px;
+        max-width: 1000px;
         margin: 50px auto;
         padding: 20px;
         background-color: #fff;
@@ -131,6 +120,20 @@
       .success {
         background-color: #4caf50;
       }
+      .thumbnail{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        margin: 0 auto;
+      }
+      .thumbnail p{
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'poppins';
+        width: 22%;
+        color: #C39BD3;
+      }
     </style>
   </head>
   <body>
@@ -142,6 +145,9 @@
         <li><a href="/insert">Add Book</a></li>
         <li><a href="/delete">Delete Book</a></li>
         <li><a href="/view">View Books</a></li>
+        <li>
+          <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
+        </li>
       </ul>
     </header>
 
@@ -154,7 +160,10 @@
       </form>
       <div id="deleteMessage"></div>
     </div>
-    <img class="thumbnail" src="../images/tidal-wave2.jpg" alt="" />
+    <div class="thumbnail">
+      <p>What book do you want to delete ?</p>
+      <img src="../images/delete-removebg-preview.png" alt="">
+    </div>
     <script>
       document
         .getElementById("deleteForm")

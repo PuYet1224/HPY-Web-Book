@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,10 +17,10 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
+        background-color: #FBFCFC;
       }
       header {
-        background: linear-gradient(to right, #fff7d9 60%, #ffe6b6 100%);
+        background: #fff;
         color: #fff;
         padding: 0px 0;
         text-align: center;
@@ -42,12 +44,6 @@
         gap: 30px;
         margin-right: 20px;
       }
-      .list-books li {
-        padding: 10px 20px;
-        border-radius: 5px;
-        background: white;
-        transition: ease-in-out 0.2s;
-      }
       .list-books li a {
         text-decoration: none;
         font-family: "poppins";
@@ -55,63 +51,85 @@
         font-weight: bold;
         color: black;
         transition: ease-in-out 0.1s;
+        padding: 10px 20px;
+        background: none;
+        border-radius: 5px;
       }
-      .list-books li:hover {
-        background: #53ccec;
-      }
+
       .list-books li a:hover {
-        color: white;
+        color: rgb(0, 0, 0);
+        background: #AED6F1;
+        color: #fff;
       }
       .thumbnail {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
         margin: 0 auto;
-        position: absolute;
-        z-index: -99;
-        width: 60%;
-        height: 60%;
-        top: 150px;
-        left: 20%;
+      }
+      .thumbnail p{
+        color: #AED6F1;
+        font-family: 'poppins';
+        font-weight: bold;
+        font-size: 40px;
+        width: 22%;
       }
       .container {
-        max-width: 1000px;
+        max-width: 100%;
         margin: 50px auto;
         padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
+        background: linear-gradient(to right, #EBF5FB 30%, #D6EAF8 100%);
+        /* border-radius: 10px; */
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      #searchForm{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
       }
       h1 {
         text-align: center;
         margin-bottom: 20px;
-        font-family: 'poppins';
+        font-family: "poppins";
+        color: #5DADE2;
       }
       label {
         font-weight: bold;
         display: block;
         margin-bottom: 5px;
-        font-family: 'poppins';
+        font-family: "poppins";
+        display: flex;
+        justify-content: flex-start;
       }
       input[type="text"],
       select {
-        width: 100%;
+        width: 50%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         box-sizing: border-box;
         margin-bottom: 20px;
-        font-family: 'poppins';
+        font-family: "poppins";
+      }
+      #searchFields{
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
       button[type="submit"] {
         color: #000000;
         border-radius: 5px;
         padding: 10px 20px;
         cursor: pointer;
-        border: none;
-        background: #e7e7e7;
-        font-family: 'poppins';
+        border: 0.1px solid;
+        background: none;
+        font-family: "poppins";
         font-weight: bold;
         transition: 0.2s ease-in-out;
         margin-bottom: 20px;
+        width: 50%;
       }
       button[type="submit"]:hover {
         background: #53ccec;
@@ -129,7 +147,7 @@
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
-        font-family: 'poppins';
+        font-family: "poppins";
       }
       th {
         background-color: #007bff;
@@ -155,12 +173,15 @@
         <li><a href="/insert">Add Book</a></li>
         <li><a href="/delete">Delete Book</a></li>
         <li><a href="/view">View Books</a></li>
+        <li>
+          <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
+        </li>
       </ul>
     </header>
     <div class="container">
-      <h1>Search Books</h1>
+      <h1>You can find all information about the books here</h1>
       <form id="searchForm">
-        <label for="searchType">Search By:</label>
+        <!-- <label for="searchType">Search By:</label> -->
         <select id="searchType">
           <option value="id">ID</option>
           <option value="name">Name</option>
@@ -176,11 +197,14 @@
             placeholder="Enter Search Value"
           />
         </div>
-        <button type="submit">Search</button>
+        <button type="submit">Submit</button>
       </form>
       <div id="searchResults"></div>
     </div>
-    <img class="thumbnail" src="../images/tidal-wave2.jpg" alt="" />
+    <div class="thumbnail">
+      <p>What book are you finding ?</p>
+      <img src="../images/finding-img-removebg-preview.png" alt="" />
+    </div>
     <script>
       async function searchBooks(event) {
         event.preventDefault();

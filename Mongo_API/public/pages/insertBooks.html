@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -10,14 +12,18 @@
       rel="stylesheet"
     />
     <title>Insert Books</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-        }
-        header {
-            background:linear-gradient(to right,#fff7d9 60%, #ffe6b6 100%);        color: #fff;
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f8f9fa;
+      }
+      header {
+        background: linear-gradient(to right,#C5E8B7 20%, #83D475 100%);
+        color: #fff;
         padding: 0px 0;
         text-align: center;
         margin-bottom: 40px;
@@ -26,7 +32,7 @@
         align-items: center;
         height: 20%;
       }
-      .logo{
+      .logo {
         height: 120px;
         margin-left: 20px;
       }
@@ -34,164 +40,204 @@
       header h1 {
         margin: 0;
       }
-      .list-books{
+      .list-books {
         list-style: none;
         display: flex;
         gap: 30px;
         margin-right: 20px;
       }
-      .list-books li{
-        padding: 10px 20px;
-        border-radius: 5px;
-        background: white;
-        transition: ease-in-out 0.2s;
-      }
-      .list-books li a{
+      .list-books li a {
         text-decoration: none;
-        font-family: 'poppins';
+        font-family: "poppins";
         font-size: 20px;
         font-weight: bold;
         color: black;
         transition: ease-in-out 0.1s;
+        padding: 10px 20px;
+        background: none;
+        border-radius: 5px;
       }
-      .list-books li:hover{
-        background: #53ccec;
+
+      .list-books li a:hover {
+        color: rgb(0, 0, 0);
+        background: #fff;
       }
-      .list-books li a:hover{
-        color: white;
+      .container {
+        display: flex;
+        flex-direction: column;
+        margin-top: 50px;
+        margin-bottom: 0px;
+        width: 70%;
+        margin: 0 auto;
+        justify-content: center;
+        align-items: center;
       }
-        .container {
-            margin-top: 50px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-family: 'poppins';
-            font-weight: bold;
-        }
-        form {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-        }
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
-        input[type="text"]:focus,
-        input[type="number"]:focus {
-            border-color: #007bff;
-        }
-        .btn-add {
-            background-color: #e7e7e7;
-            color: #000000;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-weight: 600;
-        }
-        .btn-add:hover {
-            background-color: #4aa5ff;
-            color: #fff;
-            font-weight: 600;
-        }
-        .book-group {
-            border: 1px solid #1974d3;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-            font-family: 'poppins';
-        }
-        .btn-add:hover {
-        animation: rotate 0.2s linear;
-        }
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(90deg);
-            }
-        }
-        .btn-primary{
-            font-family: 'poppins';
-            font-weight: bold;
-            font-size: 20px;
-        }
+      .insertform{
+        width: 100%;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-family: "poppins";
+        font-weight: bold;
+      }
+      form {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: color 0.3s ease;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus {
+        border-color: #007bff;
+      }
+      .btn-add {
+        background-color: #e7e7e7;
+        color: #000000;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: 600;
+      }
+      .btn-add:hover {
+        background-color: #C5E8B7;
+        color: #fff;
+        font-weight: 600;
+      }
+      .book-group {
+        border: 1px solid #C5E8B7;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        font-family: "poppins";
+        width: 800px;
+      }
+      .btn-primary {
+        font-family: "poppins";
+        font-weight: bold;
+        font-size: 20px;
+        background: #C5E8B7;
+        border: none;
+      }
+      .btn-primary:hover{
+        background: #83D475;
+      }
+      .thumbnail{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        margin: 0 auto;
+      }
+      .thumbnail p{
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'poppins';
+        width: 22%;
+        color: #C5E8B7;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <img src="../images/logo.png" alt="" class="logo">
-        <ul class="list-books">
-          <li><a href="/search">Search Book</a></li>
-          <li><a href="/update">Update Book</a></li>
-          <li><a href="/insert">Add Book</a></li>
-          <li><a href="/delete">Delete Book</a></li>
-          <li><a href="/view">View Books</a></li>
-        </ul>
-      </header>
+      <img src="../images/logo.png" alt="" class="logo" />
+      <ul class="list-books">
+        <li><a href="/search">Search Book</a></li>
+        <li><a href="/update">Update Book</a></li>
+        <li><a href="/insert">Add Book</a></li>
+        <li><a href="/delete">Delete Book</a></li>
+        <li><a href="/view">View Books</a></li>
+        <li>
+          <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
+        </li>
+      </ul>
+    </header>
     <div class="container">
-        <h1>Add Books</h1>
-        <form id="insertform" action="/insert" method="POST">
-            <div id="book-container">
-                <div class="book-group">
-                    <h2>Khung Thêm Sách 1</h2>
-                    <div class="form-group">
-                        <label for="id">ID:</label>
-                        <input type="text" name="id[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" name="name[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="type">Type:</label>
-                        <input type="text" name="type[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="author">Author:</label>
-                        <input type="text" name="author[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="publicationYear">Publication Year:</label>
-                        <input type="number" name="publicationYear[]" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="rating">Rating:</label>
-                        <input type="number" name="rating[]" step="0.1" class="form-control" required>
-                    </div>
-                </div>
+      <h1>Add Books</h1>
+      <form id="insertform" action="/insert" method="POST">
+        <div id="book-container">
+          <div class="book-group">
+            <h2>Khung Thêm Sách 1</h2>
+            <div class="form-group">
+              <label for="id">ID:</label>
+              <input type="text" name="id[]" class="form-control" required />
             </div>
-            <button type="button" class="btn btn-add" id="add-book">+</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" name="name[]" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="type">Type:</label>
+              <input type="text" name="type[]" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="author">Author:</label>
+              <input
+                type="text"
+                name="author[]"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="publicationYear">Publication Year:</label>
+              <input
+                type="number"
+                name="publicationYear[]"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="rating">Rating:</label>
+              <input
+                type="number"
+                name="rating[]"
+                step="0.1"
+                class="form-control"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-add" id="add-book">+</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="thumbnail">
+        <p>Do you want to add somethings ?</p>
+        <img src="../images/add-removebg-preview.png" alt="">
     </div>
     <script>
-        document.getElementById('add-book').addEventListener('click', function() {
-            var bookContainer = document.getElementById('book-container');
-            var bookGroup = document.createElement('div');
-            bookGroup.className = 'book-group';
-            var index = document.querySelectorAll('.book-group').length + 1;
-            bookGroup.innerHTML = `
+      document
+        .getElementById("add-book")
+        .addEventListener("click", function () {
+          var bookContainer = document.getElementById("book-container");
+          var bookGroup = document.createElement("div");
+          bookGroup.className = "book-group";
+          var index = document.querySelectorAll(".book-group").length + 1;
+          bookGroup.innerHTML = `
                 <h2>Khung Thêm Sách ${index}</h2>
                 <div class="form-group">
                     <label for="id">ID:</label>
@@ -219,20 +265,21 @@
                 </div>
                 <button type="button" class="btn btn-danger" onclick="removeBook(this)">Xóa</button>
             `;
-            bookContainer.appendChild(bookGroup);
-            updateBookCount();
+          bookContainer.appendChild(bookGroup);
+          updateBookCount();
         });
 
-        function removeBook(button) {
-            var bookGroup = button.parentNode;
-            bookGroup.parentNode.removeChild(bookGroup);
-            updateBookCount();
-        }
+      function removeBook(button) {
+        var bookGroup = button.parentNode;
+        bookGroup.parentNode.removeChild(bookGroup);
+        updateBookCount();
+      }
 
-        function updateBookCount() {
-            var bookCount = document.querySelectorAll('.book-group').length;
-            document.getElementById('book-count').textContent = bookCount;
-        }
+      function updateBookCount() {
+        var bookCount = document.querySelectorAll(".book-group").length;
+        document.getElementById("book-count").textContent = bookCount;
+      }
     </script>
-</body>
+  </body>
 </html>
+1`  

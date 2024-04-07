@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,7 +23,7 @@
         height: 100vh;
       }
       header {
-        background:linear-gradient(to right,#fff7d9 60%, #ffe6b6 100%);
+        background: linear-gradient(to right, #fff7d9 60%, #ffe6b6 100%);
         color: #fff;
         padding: 0px 0;
         text-align: center;
@@ -29,7 +31,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 20%;
+        height: 13%;
       }
       .logo {
         height: 120px;
@@ -45,12 +47,6 @@
         gap: 30px;
         margin-right: 20px;
       }
-      .list-books li {
-        padding: 10px 20px;
-        border-radius: 5px;
-        background: white;
-        transition: ease-in-out 0.2s;
-      }
       .list-books li a {
         text-decoration: none;
         font-family: "poppins";
@@ -58,61 +54,60 @@
         font-weight: bold;
         color: black;
         transition: ease-in-out 0.1s;
+        padding: 10px 20px;
+        background: none;
+        border-radius: 5px;
       }
-      .list-books li:hover {
-        background: #53ccec;
-      }
+
       .list-books li a:hover {
-        color: white;
+        color: rgb(0, 0, 0);
+        background: #fff;
       }
       .container {
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         padding: 40px;
-        max-width: 800px;
-        width: 100%;
-        position: relative;
-        left: 30%;
+        width: 70%;
+        margin-bottom: 30px;
+        margin: 0 auto;
       }
 
       h1 {
         text-align: center;
         margin-bottom: 30px;
         color: #333;
-        font-family: 'poppins';
+        font-family: "poppins";
       }
 
       form {
         display: flex;
         flex-direction: column;
-        font-family: 'poppins';
-
+        font-family: "poppins";
       }
 
       label {
         font-weight: bold;
         margin-bottom: 8px;
         color: #555;
-        font-family: 'poppins';
-
+        font-family: "poppins";
       }
 
       input[type="text"],
       input[type="number"],
       button {
-        padding: 10px;
+        padding: 10px 5px;
         border: 1px solid #ccc;
         border-radius: 4px;
         margin-bottom: 20px;
         font-size: 16px;
         width: 100%;
-        font-family: 'poppins';
+        font-family: "poppins";
         font-weight: bold;
       }
 
       button {
-        background-color: #007bff;
+        background-color: #F9E79F;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -121,7 +116,7 @@
       }
 
       button:hover {
-        background-color: #0056b3;
+        background-color: #F1C40F;
       }
 
       #bookInfoContainer {
@@ -151,6 +146,21 @@
         font-size: 16px;
         width: 100%;
       }
+      .thumbnail{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: -50px;
+        width: 50%;
+        margin: 0 auto;
+      }
+      .thumbnail p{
+        color: #F7DC6F;
+        font-size: 40px;
+        width: 22%;
+        font-weight: bold;
+        font-family: 'poppins';
+      }
     </style>
   </head>
   <header>
@@ -161,6 +171,9 @@
       <li><a href="/insert">Add Book</a></li>
       <li><a href="/delete">Delete Book</a></li>
       <li><a href="/view">View Books</a></li>
+      <li>
+        <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
+      </li>
     </ul>
   </header>
   <body>
@@ -222,6 +235,11 @@
           <button type="submit">Update</button>
         </div>
       </form>
+      
+    </div>
+    <div class="thumbnail">
+      <p>You can update book on here</p>
+      <img src="../images/update-removebg-preview.png" alt="" />
     </div>
     <script>
       function getBookInfo() {
@@ -240,13 +258,15 @@
             return response.json();
           })
           .then((data) => {
-          document.getElementById("bookId").value = data.id;
-          document.getElementById("name").value = data.name;
-          document.getElementById("type").value = data.type;
-          document.getElementById("author").value = data.author;
-          document.getElementById("publicationYear").value = data.publicationYear;
-          document.getElementById("rating").value = data.rating;
-          document.getElementById("bookInfoContainer").style.display = "block";
+            document.getElementById("bookId").value = data.id;
+            document.getElementById("name").value = data.name;
+            document.getElementById("type").value = data.type;
+            document.getElementById("author").value = data.author;
+            document.getElementById("publicationYear").value =
+              data.publicationYear;
+            document.getElementById("rating").value = data.rating;
+            document.getElementById("bookInfoContainer").style.display =
+              "block";
           })
 
           .catch((error) => {

@@ -10,6 +10,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+// Admin
+app.get('/admin', async (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'pages', 'admin.html'));
+});
 // Menu
 app.get('/menu', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'menu.html'));
