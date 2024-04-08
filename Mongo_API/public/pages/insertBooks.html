@@ -163,6 +163,7 @@
     <header>
       <img src="../images/logo.png" alt="" class="logo" />
       <ul class="list-books">
+        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/search">Search Book</a></li>
         <li><a href="/update">Update Book</a></li>
         <li><a href="/insert">Add Book</a></li>
@@ -274,11 +275,9 @@
     var bookContainer = document.getElementById("book-container");
     var index = document.querySelectorAll(".book-group").length + 1;
 
-    // Tạo một div mới cho mỗi cuốn sách
     var bookGroup = document.createElement("div");
     bookGroup.className = "book-group";
 
-    // Xây dựng nội dung HTML cho mỗi cuốn sách
     bookGroup.innerHTML = `
         <h2>Khung Thêm Sách ${index}</h2>
         <div class="form-group">
@@ -341,7 +340,6 @@ function removeBook(button) {
     bookGroup.parentNode.removeChild(bookGroup);
     updateBookCount();
 }
-
 function updateBookCount() {
     var bookCount = document.querySelectorAll(".book-group").length;
     document.getElementById("book-count").textContent = bookCount;

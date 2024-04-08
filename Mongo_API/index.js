@@ -66,7 +66,7 @@ app.post('/insert', upload.array('image'), handleImageUpload, async (req, res) =
             throw new Error('No images uploaded');
         }
 
-        res.redirect('/'); 
+        res.redirect('/insert'); 
     } catch (err) {
         console.error('Error creating book:', err);
         res.status(500).json({ error: 'Error creating book' }); // Trả về lỗi nếu có lỗi xảy ra
