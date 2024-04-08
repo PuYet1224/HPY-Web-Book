@@ -3,22 +3,23 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const path = require('path');
-const { findBooks, updateBookById, createBook } = require('./public/javascript/books');
+const multer = require('multer');
+const { findBooks, updateBookById, createBook, upload, handleImageUpload } = require('./public/javascript/books');
 const { client, dbName, collectionName } = require('./public/javascript/mongodb'); 
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+// Dashboard
+app.get('/dashboard', async (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'pages', 'dashboard.html'));
+});
 // Admin
 app.get('/admin', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'admin.html'));
 });
-// Menu
-app.get('/menu', async (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pages', 'menu.html'));
-});
+
 // Home
 app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'viewBooks.html'));
@@ -35,28 +36,40 @@ app.post('/', (req, res) => {
 
 // Add Book
 app.get('/insert', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public','pages', 'insertBooks.html'));
+    res.sendFile(path.join(__dirname, 'public', 'pages', 'insertBooks.html'));
 });
 
-app.post('/insert', async (req, res) => {
+app.post('/insert', upload.array('image'), handleImageUpload, async (req, res) => {
     try {
-        let books = req.body;
+        const books = req.body;
         if (!Array.isArray(books.id)) {
             books = [books];
         }
-        const bookObjects = books.id.map((id, index) => ({
-            id: id,
-            name: books.name[index],
-            type: books.type[index],
-            author: books.author[index],
-            publicationYear: books.publicationYear[index],
-            rating: books.rating[index]
-        }));
-        await createBook(bookObjects);
-        res.redirect('/');
+
+        if (req.files && req.files.length > 0) {
+            const bookObjects = books.id.map((id, index) => {
+                const imageUrl = req.files[index].filename;
+                return {
+                    id: id,
+                    name: books.name[index],
+                    type: books.type[index],
+                    author: books.author[index],
+                    publicationYear: books.publicationYear[index],
+                    rating: books.rating[index],
+                    image: imageUrl, 
+                    price: books.price[index],
+                    description: books.description[index]
+                };
+            });
+            await createBook(bookObjects); 
+        } else {
+            throw new Error('No images uploaded');
+        }
+
+        res.redirect('/'); 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ err: 'Error creating book' });
+        console.error('Error creating book:', err);
+        res.status(500).json({ error: 'Error creating book' }); // Trả về lỗi nếu có lỗi xảy ra
     }
 });
 
@@ -90,14 +103,27 @@ app.post('/update', async (req, res) => {
     }
 });
 
-app.post('/update/:id', async (req, res) => {
-    const bookId = req.params.id;
-    const updatedBook = req.body;
-    await updateBookById(bookId, updatedBook);
-    res.redirect('/');
-});
+    app.post('/update/:id', async (req, res) => {   
+        const bookId = req.params.id;
+        const updatedBook = req.body;
+        await updateBookById(bookId, updatedBook);
+        res.redirect('/');
+    });
 
-
+    app.post('/uploadImage', upload.single('image'), (req, res) => {
+        try {
+            if (!req.file) {
+                throw new Error('No image file uploaded');
+            }
+    
+            const imageUrl = req.file.filename;
+            res.status(200).json({ imageUrl });
+        } catch (err) {
+            console.error('Error uploading image:', err);
+            res.status(500).json({ error: 'Error uploading image' });
+        }
+    });
+    
 // Delete Book
 app.get('/delete', async (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'deleteBooks.html'));

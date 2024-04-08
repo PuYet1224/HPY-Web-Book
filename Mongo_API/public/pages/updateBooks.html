@@ -179,7 +179,7 @@
   <body>
     <div class="container">
       <h1>Update Book</h1>
-      <form id="updateForm" action="/update" method="POST">
+      <form id="updateForm" action="/update" method="POST" enctype="multipart/form-data">
         <label for="bookId">Enter Book ID:</label>
         <input
           type="text"
@@ -232,10 +232,36 @@
             required
             placeholder="Enter Rating"
           />
+          <label for="image">Image:</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            required
+            placeholder="Enter Image"
+          />
+          <label for="price">Price:</label>
+          <input
+            type="text"
+            id="price"
+            name="price"
+            step="0.1"
+            required
+            placeholder="Enter Price"
+          />
+          <label for="description">Description:</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            required
+            placeholder="Enter Description"
+          />
           <button type="submit">Update</button>
         </div>
       </form>
-      
+
     </div>
     <div class="thumbnail">
       <p>You can update book on here</p>
@@ -262,55 +288,105 @@
             document.getElementById("name").value = data.name;
             document.getElementById("type").value = data.type;
             document.getElementById("author").value = data.author;
-            document.getElementById("publicationYear").value =
-              data.publicationYear;
+            document.getElementById("publicationYear").value = data.publicationYear;
             document.getElementById("rating").value = data.rating;
-            document.getElementById("bookInfoContainer").style.display =
-              "block";
+            document.getElementById("price").value = data.price;
+            document.getElementById("description").value = data.description;
+            document.getElementById("bookInfoContainer").style.display = "block";
+    
+            // Limit year <=2024 and rating <=5
+            const publicationYear = parseInt(data.publicationYear);
+            const rating = parseFloat(data.rating);
+    
+            if (publicationYear > 2024 || rating > 5) {
+              if (publicationYear > 2024) {
+                alert("Publication year should not exceed 2024.");
+                document.getElementById("publicationYear").value = ""; 
+              }
+              if (rating > 5) {
+                alert("Rating should not exceed 5.");
+                document.getElementById("rating").value = "";
+              }
+              return;
+            }
           })
-
           .catch((error) => {
             console.error("Error getting book info:", error);
             alert("Book not found. Try Again.");
           });
       }
-      document
-        .getElementById("updateForm")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-          const formData = new FormData(this);
-          const name = formData.get("name");
-          const type = formData.get("type");
-          const author = formData.get("author");
-          const publicationYear = formData.get("publicationYear");
-          const rating = formData.get("rating");
+    
+      document.getElementById("updateForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const name = formData.get("name");
+        const type = formData.get("type");
+        const author = formData.get("author");
+        const publicationYear = formData.get("publicationYear");
+        const rating = formData.get("rating");
+        const imageFile = formData.get("image");
+        const price = formData.get("price");
+        const description = formData.get("description");
+    
+        if (!name || !type || !author || !publicationYear || !rating || !price || !description) {
+          alert("Please fill in all fields.");
+          return;
+        }
+    
+        const bookId = formData.get("bookId");
+        const requestBody = {
+          name,
+          type,
+          author,
+          publicationYear,
+          rating,
+          price,
+          description,
+        };
+    
+if (imageFile) {
+  const imageFormData = new FormData();
+  imageFormData.append("image", imageFile);
 
-          if (!name || !type || !author || !publicationYear || !rating) {
-            alert("Please fill in all fields.");
-            return;
-          }
+  try {
+    const uploadResponse = await fetch("/uploadImage", {
+      method: "POST",
+      body: imageFormData,
+    });
 
-          const bookId = formData.get("bookId");
+    if (uploadResponse.ok) {
+      const imageData = await uploadResponse.json();
+      requestBody.image = imageData.imageUrl; 
+    } else {
+      throw new Error("Failed to upload image");
+    }
+  } catch (err) {
+    console.error("Error uploading image:", err);
+    alert("Failed to upload new image. Please try again.");
+    return;
+  }
+}
+    
+        try {
           const response = await fetch(`/update/${bookId}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              name,
-              type,
-              author,
-              publicationYear,
-              rating,
-            }),
+            body: JSON.stringify(requestBody),
           });
+    
           if (response.ok) {
             alert("Update successful!");
             location.reload();
           } else {
-            alert("Error updating book. Please try again.");
+            throw new Error("Error updating book");
           }
-        });
-    </script>
+        } catch (error) {
+          console.error("Error updating book:", error);
+          alert("Error updating book. Please try again.");
+        }
+      });
+    </script>            
   </body>
 </html>
