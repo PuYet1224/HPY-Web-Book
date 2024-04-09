@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 
 async function findBooks(criteria) {
     try {
-        const usersCollection = await connectToMongoDB();
+        const usersCollection = await connectToMongoDB(); // Assuming this function connects to MongoDB
         let books;
         if (criteria) {
             if (typeof criteria === 'string') {
@@ -36,6 +36,7 @@ async function findBooks(criteria) {
         return [];
     }
 }
+
 
 // Hàm cập nhật sách dựa trên ID và thông tin sách mới
 async function updateBookById(bookId, updatedBook) {

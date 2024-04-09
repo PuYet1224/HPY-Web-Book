@@ -149,21 +149,28 @@ app.get('/search', async (req, res) => {
 app.post('/search', async (req, res) => {
     const searchCriteria = req.body;
     const query = {};
-    Object.keys(searchCriteria).forEach(key => {
-        if (searchCriteria[key]) {
-            if (key === 'publicationYear' || key === 'rating') {
-                query[key] = parseFloat(searchCriteria[key]);
-            } else if (key === 'name' || key === 'type' || key === 'author') {
-                query[key] = { $regex: new RegExp(searchCriteria[key], 'i') };
-            } else if (key === 'id') {
-                query[key] = searchCriteria[key];
+    if (searchCriteria.id) {
+        query.id = searchCriteria.id; // If searching by ID, only search by ID
+    } else {
+        Object.keys(searchCriteria).forEach(key => {
+            if (searchCriteria[key]) {
+                if (key === 'publicationYear' || key === 'rating') {
+                    query[key] = parseFloat(searchCriteria[key]);
+                } else if (key === 'name' || key === 'type' || key === 'author') {
+                    query[key] = { $regex: new RegExp(searchCriteria[key], 'i') };
+                }
             }
-        }
-    });
+        });
+    }
     try {
         const books = await findBooks(query);
         if (books.length > 0) {
-            res.status(200).json(books);
+            if (searchCriteria.id) {
+                const bookIds = books.map(book => ({ id: book.id }));
+                res.status(200).json(bookIds); // Only send IDs when searching by ID
+            } else {
+                res.status(200).json(books); // Send full book details for other search criteria
+            }
         } else {
             res.status(404).json({ message: 'No books found' });
         }        
@@ -171,6 +178,7 @@ app.post('/search', async (req, res) => {
         console.error('Error searching for books:', error);
     }
 });
+
 
 // Start server
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

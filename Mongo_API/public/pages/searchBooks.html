@@ -162,28 +162,7 @@
         font-weight: bold;
         color: #666;
       }
-      .dropdown-menu {
-  display: none;
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-
-.dropdown-menu li {
-  margin-bottom: 5px;
-}
-
-.dropdown-menu li a {
-  text-decoration: none;
-  color: black;
-  font-size: 16px;
-}
-
-/* Show the dropdown menu on hover */
-li:hover .dropdown-menu {
-  display: block;
-}
+  
 
     </style>
   </head>
@@ -192,16 +171,14 @@ li:hover .dropdown-menu {
       <img src="../images/logo.png" alt="" class="logo" />
       <ul class="list-books">
         <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/search">Search Book</a></li>
+        <li><a href="/update">Update Book</a></li>
+        <li><a href="/insert">Add Book</a></li>
+        <li><a href="/delete">Delete Book</a></li>
+        <li><a href="/view">View Books</a></li>
         <li>
           <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="/search">Search Book</a></li>
-            <li><a href="/update">Update Book</a></li>
-            <li><a href="/insert">Add Book</a></li>
-            <li><a href="/delete">Delete Book</a></li>
-            <li><a href="/view">View Books</a></li>
-          </ul>
-        </li>
+         </li>
       </ul>
     </header>
     <div class="container">
@@ -284,6 +261,66 @@ li:hover .dropdown-menu {
       document
         .getElementById("searchForm")
         .addEventListener("submit", searchBooks);
+
+        async function searchBooks(event) {
+    event.preventDefault();
+    const searchType = document.getElementById("searchType").value;
+    const searchValue = document.getElementById("searchValue").value;
+    const response = await fetch("/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        [searchType]: searchValue,
+      }),
+    });
+    const books = await response.json();
+    displayBooks(books, searchType);
+  }
+
+  function displayBooks(books, searchType) {
+    const searchResults = document.getElementById("searchResults");
+    searchResults.innerHTML = "";
+    if (books.length > 0) {
+      if (searchType === 'id') {
+        const idList = document.createElement("ul");
+        books.forEach(book => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `ID: ${book.id}`;
+          idList.appendChild(listItem);
+        });
+        searchResults.appendChild(idList);
+      } else {
+        const table = document.createElement("table");
+        const headerRow = table.insertRow();
+        for (const key in books[0]) {
+          if (key !== "_id") {
+            const headerCell = document.createElement("th");
+            headerCell.textContent = key.toUpperCase();
+            headerRow.appendChild(headerCell);
+          }
+        }
+        books.forEach((book) => {
+          const row = table.insertRow();
+          for (const key in book) {
+            if (key !== "_id") {
+              const cell = row.insertCell();
+              cell.textContent = book[key];
+            }
+          }
+        });
+        searchResults.appendChild(table);
+      }
+    } else {
+      const noBooksMessage = document.createElement("div");
+      noBooksMessage.classList.add("no-books");
+      noBooksMessage.textContent = "No books found";
+      searchResults.appendChild(noBooksMessage);
+    }
+  }
+
+  document.getElementById("searchForm").addEventListener("submit", searchBooks);
     </script>
   </body>
 </html>

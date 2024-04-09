@@ -210,28 +210,7 @@
     .customer-components div p:nth-of-type(2) {
       color: #b2babb;
     }
-    .dropdown-menu {
-  display: none;
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-
-.dropdown-menu li {
-  margin-bottom: 5px;
-}
-
-.dropdown-menu li a {
-  text-decoration: none;
-  color: black;
-  font-size: 16px;
-}
-
-/* Show the dropdown menu on hover */
-li:hover .dropdown-menu {
-  display: block;
-}
+  
 
   </style>
   <body>
@@ -239,17 +218,14 @@ li:hover .dropdown-menu {
       <img src="../images/logo.png" alt="" class="logo" />
       <ul class="list-books">
         <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/search">Search Book</a></li>
+        <li><a href="/update">Update Book</a></li>
+        <li><a href="/insert">Add Book</a></li>
+        <li><a href="/delete">Delete Book</a></li>
+        <li><a href="/view">View Books</a></li>
         <li>
           <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
-          <ul class="dropdown-menu">
-            <li><a href="/search">Search Book</a></li>
-            <li><a href="/update">Update Book</a></li>
-            <li><a href="/insert">Add Book</a></li>
-            <li><a href="/delete">Delete Book</a></li>
-            <li><a href="/view">View Books</a></li>
-          </ul>
-        </li>
-        
+         </li>
       </ul>
     </header>
     <section class="section1">
