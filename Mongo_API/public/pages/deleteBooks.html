@@ -18,29 +18,18 @@
     <header>
       <img src="../images/logo.png" alt="" class="logo" />
       <ul class="list-books">
-        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/search">Search Book</a></li>
         <li><a href="/update">Update Book</a></li>
         <li><a href="/insert">Add Book</a></li>
         <li><a href="/delete">Delete Book</a></li>
         <li><a href="/view">View Books</a></li>
-        <li>
-          <a href="/admin">Admin <i class="fa-solid fa-user"></i></a>
-         </li>
+       
       </ul>
     </header>
 
-    <div class="container">
-      <h1>Delete Books</h1>
-      <form id="deleteForm" action="/delete" method="POST">
-        <label for="bookId">Enter Book ID to Delete:</label>
-        <input type="text" id="bookId" name="bookId" required />
-        <input type="submit" value="Delete Book" />
-      </form>
-      <div id="deleteMessage"></div>
-    </div>
+   
     <div id="bookTableContainer"></div>
-    <button onclick="deleteSelectedBooks()">Delete Selected Books</button>
+    <button onclick="deleteSelectedBooks()" class="delete-selected-books">Delete Selected Books</button>
 
 
     <div class="thumbnail">

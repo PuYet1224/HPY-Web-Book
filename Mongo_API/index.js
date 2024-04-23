@@ -12,14 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Dashboard
-app.get('/dashboard', async (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pages', 'dashboard.html'));
-});
-// Admin
-app.get('/admin', async (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pages', 'admin.html'));
-});
+
 
 // Home
 app.get('/', async (req, res) => {
@@ -143,19 +136,29 @@ app.post('/delete', async (req, res) => {
         return res.sendStatus(404);
     }
 });
+// Delete Multiple Books
 app.post('/deletemany', async (req, res) => {
-    const bookIdToDelete = req.body.bookId;
-    const result = await client.db(dbName).collection(collectionName).deleteMany({ $or: [{ id: bookIdToDelete }, { _id: bookIdToDelete }] });
-    if (result.deletedCount === 1) {
-        console.log(`Deleted book with ID: ${bookIdToDelete} successfully.`);
-        // Send back updated book data after deletion
-        const updatedBooks = await client.db(dbName).collection(collectionName).find({}).toArray();
-        res.json(updatedBooks);
-    } else {
-        console.log(`Book with ID ${bookIdToDelete} not found.`);
-        return res.sendStatus(404);
+    const { bookIds } = req.body;
+    try {
+        // Assuming 'bookIds' is an array of book IDs
+        const result = await client.db(dbName).collection(collectionName).deleteMany({ id: { $in: bookIds } });
+        
+        if (result.deletedCount > 0) {
+            console.log(`Deleted ${result.deletedCount} books successfully.`);
+            // Send back updated book data after deletion
+            const updatedBooks = await client.db(dbName).collection(collectionName).find({}).toArray();
+            res.json(updatedBooks);
+        } else {
+            console.log('No books found for deletion.');
+            res.status(404).json({ message: 'No books found for deletion' });
+        }
+    } catch (error) {
+        console.error('Error deleting selected books:', error);
+        res.status(500).json({ error: 'Error deleting selected books' });
     }
 });
+
+
 
 // Search Book
 app.get('/search', async (req, res) => {

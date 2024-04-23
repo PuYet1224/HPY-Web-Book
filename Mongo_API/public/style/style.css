@@ -156,3 +156,30 @@ body {
 .book-table button:hover {
     background-color: #ff3333;
 }
+/* Add this CSS to your style.css file */
+
+/* Styling the button */
+button.delete-selected-books {
+  background-color: #ff6347; /* Red color */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 20px auto;
+  display: block;
+  
+}
+
+/* Hover effect */
+button.delete-selected-books:hover {
+  background-color: #d63e2b; /* Darker red color */
+}
+
+/* Disabled state */
+button.delete-selected-books:disabled {
+  background-color: #ccc; /* Light gray color */
+  cursor: not-allowed;
+}
