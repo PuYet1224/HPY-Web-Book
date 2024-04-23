@@ -1,0 +1,105 @@
+[
+    {
+        "id": "A01",
+        "name": "Dế Mèn Phiêu Lưu Ký",
+        "type": "Truyện ngắn",
+        "author": "Tô Hoài",
+        "publicationYear": 1941,
+        "rating": 5,
+	"image" : "../images/A01.jpg",
+	"price" : "$1.1",
+	"description":"HOT SALE"
+    },
+    {
+        "id": "A02",
+        "name": "Số Đỏ",
+        "type": "Tiểu thuyết",
+        "author": "Nguyễn Hồng",
+        "publicationYear": 1936,
+        "rating": 5,
+	"image" : "../images/A02.jpg",
+"price" : "$1.5",
+"description":"HOT SALE"
+    },
+    {
+        "id": "A03",
+        "name": "Dòng Sông Không Trở Lại",
+        "type": "Tiểu thuyết",
+        "author": "Nguyễn Ngọc Tư",
+        "publicationYear": 1990,
+        "rating": 5,
+"image" : "../images/A03.jpg",
+"price" : "$1.2",
+"description":"HOT SALE"
+    },
+    {
+        "id": "A04",
+        "name": "Nhà Giả Kim",
+        "type": "Tiểu thuyết",
+        "author": "Paulo Coelho (dịch bởi Lê Minh Khuê)",
+        "publicationYear": 1993,
+        "rating": 5,
+"image" : "../images/A04.jpg",
+"price" : "$2.5"
+    },
+    {
+        "id": "A05",
+        "name": "Dế Mèn Phiêu Lưu Ký",
+        "type": "Truyện ngắn",
+        "author": "Tô Hoài",
+        "publicationYear": 1941,
+        "rating": 5,
+"image" : "../images/A01.jpg",
+"price" : "$1.3"
+    },
+    {
+        "id": "A06",
+        "name": "Truyện Kiều",
+        "type": "Thơ",
+        "author": "Nguyễn Du",
+        "publicationYear": 1820,
+        "rating": 5,
+"image" : "../images/A06.jpg",
+"price" : "$1.1"
+    },
+    {
+        "id": "A07",
+        "name": "Đất Rừng Phương Nam",
+        "type": "Tiểu thuyết",
+        "author": "Lê Quý Đôn",
+        "publicationYear": 1770,
+        "rating": 5,
+"image" : "../images/A07.jpg",
+"price" : "$1.9"
+    },
+    {
+        "id": "A08",
+        "name": "Tắt Đèn",
+        "type": "Tiểu thuyết kinh dị",
+        "author": "Ngô Thế Linh",
+        "publicationYear": 1887,
+        "rating": 5,
+"image" : "../images/A08.jpg",
+"price" : "$2.2"
+    },
+    {
+        "id": "A09",
+        "name": "Truyện Cổ Tích Việt Nam",
+        "type": "Truyện cổ tích",
+        "author": "Không rõ",
+        "publicationYear": "Không rõ",
+        "rating": 5,
+"image" : "../images/A09.jpg",
+"price" : "$1.6"
+    },
+    {
+        "id": "A10",
+        "name": "Dấu Chân Trên Cát",
+        "type": "Hồi ký",
+        "author": "Phạm Thị Hoài",
+        "publicationYear": 1996,
+        "rating": 5,
+"image" : "../images/A10.jpg",
+"price" : "$1.5"
+    }
+]

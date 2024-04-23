@@ -14,3 +14,4 @@ valueDisplays.forEach((valueDisplay) => {
         }
     }, duration);
 });
+

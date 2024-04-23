@@ -7,6 +7,7 @@ const multer = require('multer');
 const { findBooks, updateBookById, createBook, upload, handleImageUpload } = require('./public/javascript/books');
 const { client, dbName, collectionName } = require('./public/javascript/mongodb'); 
 
+app.use(express.static('public/style'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -134,10 +135,25 @@ app.post('/delete', async (req, res) => {
     const result = await client.db(dbName).collection(collectionName).deleteOne({ $or: [{ id: bookIdToDelete }, { _id: bookIdToDelete }] });
     if (result.deletedCount === 1) {
         console.log(`Deleted book with ID: ${bookIdToDelete} successfully.`);
-        res.sendStatus(200);
+        // Send back updated book data after deletion
+        const updatedBooks = await client.db(dbName).collection(collectionName).find({}).toArray();
+        res.json(updatedBooks);
     } else {
         console.log(`Book with ID ${bookIdToDelete} not found.`);
-        res.sendStatus(404);
+        return res.sendStatus(404);
+    }
+});
+app.post('/deletemany', async (req, res) => {
+    const bookIdToDelete = req.body.bookId;
+    const result = await client.db(dbName).collection(collectionName).deleteMany({ $or: [{ id: bookIdToDelete }, { _id: bookIdToDelete }] });
+    if (result.deletedCount === 1) {
+        console.log(`Deleted book with ID: ${bookIdToDelete} successfully.`);
+        // Send back updated book data after deletion
+        const updatedBooks = await client.db(dbName).collection(collectionName).find({}).toArray();
+        res.json(updatedBooks);
+    } else {
+        console.log(`Book with ID ${bookIdToDelete} not found.`);
+        return res.sendStatus(404);
     }
 });
 
@@ -179,6 +195,17 @@ app.post('/search', async (req, res) => {
     }
 });
 
+app.get('/books', async (req, res) => {
+    try {
+        // Assuming you want to fetch all books from a collection named 'books'
+        const collection = client.db('mydb').collection('users');
+        const books = await collection.find({}).toArray();
+        res.json(books);
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        res.status(500).json({ error: 'Error fetching books' });
+    }
+});
 
 // Start server
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

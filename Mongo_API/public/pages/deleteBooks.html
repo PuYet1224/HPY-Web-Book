@@ -11,132 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+      <link rel="stylesheet" href="/style.css">
     <title>Delete Books</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
-      header {
-        background: linear-gradient(to right, #EBDEF0 60%, #C39BD3 100%);
-        color: #fff;
-        padding: 0px 0;
-        text-align: center;
-        margin-bottom: 130px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 20%;
-      }
-      .logo {
-        height: 120px;
-        margin-left: 20px;
-      }
-
-      header h1 {
-        margin: 0;
-      }
-      .list-books {
-        list-style: none;
-        display: flex;
-        gap: 30px;
-        margin-right: 20px;
-      }
-      .list-books li a {
-      text-decoration: none;
-      font-family: 'poppins';
-      font-size: 20px;
-      font-weight: bold;
-      color: black;
-      transition: ease-in-out 0.1s;
-      padding: 10px 20px;
-      background: none;
-      border-radius: 5px;
-    }
-
-
-    .list-books li a:hover {
-      color: rgb(0, 0, 0);
-      background: #fff;
-    }
-      .container {
-        max-width: 1000px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-
-      h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        font-family: "poppins";
-      }
-      label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        font-family: "poppins";
-      }
-
-      input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-      }
-
-      input[type="submit"] {
-        background-color: #ffffff;
-        color: #000000;
-        border-radius: 3px;
-        padding: 10px 20px;
-        cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
-        background: #e7e7e7;
-        border: none;
-        font-family: "poppins";
-        font-weight: 600;
-      }
-
-      input[type="submit"]:hover {
-        background-color: rgb(255, 59, 59);
-        color: #fff;
-        border: none;
-      }
-
-      #deleteMessage {
-        margin-top: 10px;
-        padding: 10px;
-        border-radius: 5px;
-        display: none;
-      }
-
-      .success {
-        background-color: #4caf50;
-      }
-      .thumbnail{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 80%;
-        margin: 0 auto;
-      }
-      .thumbnail p{
-        font-size: 40px;
-        font-weight: bold;
-        font-family: 'poppins';
-        width: 22%;
-        color: #C39BD3;
-      }
-  
-
-    </style>
   </head>
   <body>
     <header>
@@ -163,44 +39,135 @@
       </form>
       <div id="deleteMessage"></div>
     </div>
+    <div id="bookTableContainer"></div>
+    <button onclick="deleteSelectedBooks()">Delete Selected Books</button>
+
+
     <div class="thumbnail">
       <p>What book do you want to delete ?</p>
       <img src="../images/delete-removebg-preview.png" alt="">
     </div>
     <script>
-      document
-        .getElementById("deleteForm")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-          const bookId = document.getElementById("bookId").value;
-          const response = await fetch("/delete", {
-            method: "POST",
+      async function removeBook(bookId) {
+        try {
+          const response = await fetch('/delete', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-              bookId: bookId,
-            }),
+            body: JSON.stringify({ bookId: bookId })
           });
 
-          const deleteMessage = document.getElementById("deleteMessage");
           if (response.ok) {
-            console.log("Book deleted successfully!");
-            deleteMessage.textContent = `Book with ID ${bookId} deleted successfully!`;
-            deleteMessage.classList.add("success");
+            const updatedBooks = await response.json();
+            if (updatedBooks) {
+              // Update the displayed table with updated book data
+              updateTable(updatedBooks);
+            } else {
+              console.error('Failed to remove book:', response.statusText);
+            }
           } else {
-            console.error("Error deleting book:", response.statusText);
-            alert("Error deleting book. Please try again.");
+            console.error('Failed to remove book:', response.statusText);
           }
+        } catch (error) {
+          console.error('Error removing book:', error);
+        }
+      }
 
-          deleteMessage.style.display = "block";
-          deleteMessage.addEventListener("click", function () {
-            deleteMessage.style.display = "none";
+      function updateTable(books) {
+        const table = document.querySelector('.book-table');
+        if (table) {
+          table.innerHTML = ''; // Clear existing table rows
+          books.forEach((book) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td><input type="checkbox" class="book-checkbox" value="${book.id}" /></td>
+              <td>${book.id}</td>
+              <td>${book.name}</td>
+              <td>${book.type}</td>
+              <td>${book.author}</td>
+              <td>${book.publicationYear}</td>
+              <td>${book.rating}</td>
+              <td>${book.price}</td>
+              <td><button onclick="removeBook('${book.id}')">Remove</button></td>
+            `;
+            table.appendChild(row);
           });
-          if (response.ok) {
-            document.getElementById("deleteForm").reset();
-          }
+        }
+      }
+
+      async function deleteSelectedBooks() {
+    const checkboxes = document.querySelectorAll('.book-checkbox:checked');
+    const bookIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+    try {
+        const response = await fetch('/deletemany', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bookIds: bookIds })
         });
+
+        if (response.ok) {
+            const updatedBooks = await response.json();
+            if (updatedBooks) {
+                // Update the displayed table with updated book data
+                updateTable(updatedBooks);
+            } else {
+                console.error('Failed to delete selected books:', response.statusText);
+            }
+        } else {
+            console.error('Failed to delete selected books:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error deleting selected books:', error);
+    }
+}
+
+      async function displayTable() {
+        const container = document.getElementById("bookTableContainer");
+
+        try {
+          // Fetch data from MongoDB
+          const response = await fetch("/books");
+          const data = await response.json();
+
+          // Create table element
+          const table = document.createElement("table");
+          table.classList.add("book-table");
+
+          // Create table header row
+          const headerRow = document.createElement("tr");
+          headerRow.innerHTML =
+            '<th>Select</th><th>ID</th><th>Name</th><th>Type</th><th>Author</th><th>Publication Year</th><th>Rating</th><th>Price</th><th>Action</th>';
+          table.appendChild(headerRow);
+
+          // Create table rows for each book
+          data.forEach((book) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td><input type="checkbox" class="book-checkbox" value="${book.id}" /></td>
+              <td>${book.id}</td>
+              <td>${book.name}</td>
+              <td>${book.type}</td>
+              <td>${book.author}</td>
+              <td>${book.publicationYear}</td>
+              <td>${book.rating}</td>
+              <td>${book.price}</td>
+              <td><button onclick="removeBook('${book.id}')">Remove</button></td>
+            `;
+            table.appendChild(row);
+          });
+          // Append the table to the container
+          container.appendChild(table);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      // Call the function to display the table when the page loads
+      window.onload = displayTable;
     </script>
   </body>
 </html>
